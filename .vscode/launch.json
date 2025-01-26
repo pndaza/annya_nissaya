@@ -1,0 +1,65 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "annya_nissaya",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "annya_nissaya (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "annya_nissaya (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "asset_pdf_viewer_desktop",
+            "cwd": "packages/asset_pdf_viewer_desktop",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "asset_pdf_viewer_desktop (profile mode)",
+            "cwd": "packages/asset_pdf_viewer_desktop",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "asset_pdf_viewer_desktop (release mode)",
+            "cwd": "packages/asset_pdf_viewer_desktop",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "asset_pdf_viewer_mobile",
+            "cwd": "packages/asset_pdf_viewer_mobile",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "asset_pdf_viewer_mobile (profile mode)",
+            "cwd": "packages/asset_pdf_viewer_mobile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "asset_pdf_viewer_mobile (release mode)",
+            "cwd": "packages/asset_pdf_viewer_mobile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
