@@ -5,11 +5,11 @@ import '../../../../../utils/mm_number.dart';
 
 class RecentListTile extends StatelessWidget {
   const RecentListTile({
-    Key? key,
+    super.key,
     required this.recent,
     this.onClicked,
     this.onDeleted,
-  }) : super(key: key);
+  });
 
   final Recent recent;
   final VoidCallback? onClicked;

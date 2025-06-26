@@ -13,7 +13,7 @@ import 'screens/nsy_list/nsy_choice.dart';
 import 'utils/platform_helper.dart';
 
 class MyApp extends ConsumerStatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   ConsumerState<MyApp> createState() => MyAppState();
@@ -52,8 +52,8 @@ class MyAppState extends ConsumerState<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Attha Nissaya',
-      theme: ThemeData(primarySwatch: Colors.orange),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData(primarySwatch: Colors.orange, useMaterial3: false),
+      darkTheme: ThemeData.dark(useMaterial3: false),
       themeMode: themeMode,
       navigatorKey: _navigatorKey,
       home: const Home(),

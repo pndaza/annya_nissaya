@@ -1,6 +1,6 @@
-import 'package:asset_pdf_viewer/asset_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_pdf_viewer/just_pdf_viewer.dart';
 
 import 'reader_view_controller.dart';
 
@@ -8,8 +8,7 @@ class ReaderAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String bookID;
   final String? bookName;
 
-  const ReaderAppBar({Key? key, required this.bookID, this.bookName})
-      : super(key: key);
+  const ReaderAppBar({super.key, required this.bookID, this.bookName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,9 +57,9 @@ class ReaderAppBar extends ConsumerWidget implements PreferredSizeWidget {
               ),
               CheckedPopupMenuItem(
                 padding: EdgeInsets.zero,
-                checked: ColorMode.speia == pdfColorMode,
+                checked: ColorMode.sepia == pdfColorMode,
                 // padding: EdgeInsets.only(left: 16),
-                value: ColorMode.speia,
+                value: ColorMode.sepia,
                 child: const Text('ဝါကျင့်ကျင့်'),
               ),
             ],

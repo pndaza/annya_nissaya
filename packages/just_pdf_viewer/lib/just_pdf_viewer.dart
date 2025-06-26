@@ -1,5 +1,5 @@
-library asset_pdf_viewer;
+library just_pdf_viewer;
 
 export 'src/pdf_viewer.dart';
-export 'src/pdf_page_view.dart';
+export 'src/color_mode.dart';
 export 'src/pdf_controller.dart';

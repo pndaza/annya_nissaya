@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,99 +10,58 @@ part of 'book.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$Book {
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  int get categoryID => throw _privateConstructorUsedError;
-  String get categoryDescription => throw _privateConstructorUsedError;
-  int get firstPage => throw _privateConstructorUsedError;
-  int get lastPage => throw _privateConstructorUsedError;
-  int get count => throw _privateConstructorUsedError;
+  String get id;
+  String get name;
+  int get categoryID;
+  String get categoryDescription;
+  int get firstPage;
+  int get lastPage;
+  int get count;
 
-  @JsonKey(ignore: true)
-  $BookCopyWith<Book> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $BookCopyWith<$Res> {
-  factory $BookCopyWith(Book value, $Res Function(Book) then) =
-      _$BookCopyWithImpl<$Res, Book>;
-  @useResult
-  $Res call(
-      {String id,
-      String name,
-      int categoryID,
-      String categoryDescription,
-      int firstPage,
-      int lastPage,
-      int count});
-}
-
-/// @nodoc
-class _$BookCopyWithImpl<$Res, $Val extends Book>
-    implements $BookCopyWith<$Res> {
-  _$BookCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of Book
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $BookCopyWith<Book> get copyWith =>
+      _$BookCopyWithImpl<Book>(this as Book, _$identity);
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? categoryID = null,
-    Object? categoryDescription = null,
-    Object? firstPage = null,
-    Object? lastPage = null,
-    Object? count = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryID: null == categoryID
-          ? _value.categoryID
-          : categoryID // ignore: cast_nullable_to_non_nullable
-              as int,
-      categoryDescription: null == categoryDescription
-          ? _value.categoryDescription
-          : categoryDescription // ignore: cast_nullable_to_non_nullable
-              as String,
-      firstPage: null == firstPage
-          ? _value.firstPage
-          : firstPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      lastPage: null == lastPage
-          ? _value.lastPage
-          : lastPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      count: null == count
-          ? _value.count
-          : count // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Book &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.categoryID, categoryID) ||
+                other.categoryID == categoryID) &&
+            (identical(other.categoryDescription, categoryDescription) ||
+                other.categoryDescription == categoryDescription) &&
+            (identical(other.firstPage, firstPage) ||
+                other.firstPage == firstPage) &&
+            (identical(other.lastPage, lastPage) ||
+                other.lastPage == lastPage) &&
+            (identical(other.count, count) || other.count == count));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, categoryID,
+      categoryDescription, firstPage, lastPage, count);
+
+  @override
+  String toString() {
+    return 'Book(id: $id, name: $name, categoryID: $categoryID, categoryDescription: $categoryDescription, firstPage: $firstPage, lastPage: $lastPage, count: $count)';
   }
 }
 
 /// @nodoc
-abstract class _$$_BookCopyWith<$Res> implements $BookCopyWith<$Res> {
-  factory _$$_BookCopyWith(_$_Book value, $Res Function(_$_Book) then) =
-      __$$_BookCopyWithImpl<$Res>;
-  @override
+abstract mixin class $BookCopyWith<$Res> {
+  factory $BookCopyWith(Book value, $Res Function(Book) _then) =
+      _$BookCopyWithImpl;
   @useResult
   $Res call(
       {String id,
@@ -114,11 +74,14 @@ abstract class _$$_BookCopyWith<$Res> implements $BookCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_BookCopyWithImpl<$Res> extends _$BookCopyWithImpl<$Res, _$_Book>
-    implements _$$_BookCopyWith<$Res> {
-  __$$_BookCopyWithImpl(_$_Book _value, $Res Function(_$_Book) _then)
-      : super(_value, _then);
+class _$BookCopyWithImpl<$Res> implements $BookCopyWith<$Res> {
+  _$BookCopyWithImpl(this._self, this._then);
 
+  final Book _self;
+  final $Res Function(Book) _then;
+
+  /// Create a copy of Book
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -130,33 +93,33 @@ class __$$_BookCopyWithImpl<$Res> extends _$BookCopyWithImpl<$Res, _$_Book>
     Object? lastPage = null,
     Object? count = null,
   }) {
-    return _then(_$_Book(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       categoryID: null == categoryID
-          ? _value.categoryID
+          ? _self.categoryID
           : categoryID // ignore: cast_nullable_to_non_nullable
               as int,
       categoryDescription: null == categoryDescription
-          ? _value.categoryDescription
+          ? _self.categoryDescription
           : categoryDescription // ignore: cast_nullable_to_non_nullable
               as String,
       firstPage: null == firstPage
-          ? _value.firstPage
+          ? _self.firstPage
           : firstPage // ignore: cast_nullable_to_non_nullable
               as int,
       lastPage: null == lastPage
-          ? _value.lastPage
+          ? _self.lastPage
           : lastPage // ignore: cast_nullable_to_non_nullable
               as int,
       count: null == count
-          ? _value.count
+          ? _self.count
           : count // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -165,8 +128,8 @@ class __$$_BookCopyWithImpl<$Res> extends _$BookCopyWithImpl<$Res, _$_Book>
 
 /// @nodoc
 
-class _$_Book implements _Book {
-  const _$_Book(
+class _Book implements Book {
+  const _Book(
       {required this.id,
       required this.name,
       required this.categoryID,
@@ -190,16 +153,19 @@ class _$_Book implements _Book {
   @override
   final int count;
 
+  /// Create a copy of Book
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Book(id: $id, name: $name, categoryID: $categoryID, categoryDescription: $categoryDescription, firstPage: $firstPage, lastPage: $lastPage, count: $count)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$BookCopyWith<_Book> get copyWith =>
+      __$BookCopyWithImpl<_Book>(this, _$identity);
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Book &&
+            other is _Book &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.categoryID, categoryID) ||
@@ -217,38 +183,79 @@ class _$_Book implements _Book {
   int get hashCode => Object.hash(runtimeType, id, name, categoryID,
       categoryDescription, firstPage, lastPage, count);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'Book(id: $id, name: $name, categoryID: $categoryID, categoryDescription: $categoryDescription, firstPage: $firstPage, lastPage: $lastPage, count: $count)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$BookCopyWith<$Res> implements $BookCopyWith<$Res> {
+  factory _$BookCopyWith(_Book value, $Res Function(_Book) _then) =
+      __$BookCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String name,
+      int categoryID,
+      String categoryDescription,
+      int firstPage,
+      int lastPage,
+      int count});
+}
+
+/// @nodoc
+class __$BookCopyWithImpl<$Res> implements _$BookCopyWith<$Res> {
+  __$BookCopyWithImpl(this._self, this._then);
+
+  final _Book _self;
+  final $Res Function(_Book) _then;
+
+  /// Create a copy of Book
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$_BookCopyWith<_$_Book> get copyWith =>
-      __$$_BookCopyWithImpl<_$_Book>(this, _$identity);
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? categoryID = null,
+    Object? categoryDescription = null,
+    Object? firstPage = null,
+    Object? lastPage = null,
+    Object? count = null,
+  }) {
+    return _then(_Book(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryID: null == categoryID
+          ? _self.categoryID
+          : categoryID // ignore: cast_nullable_to_non_nullable
+              as int,
+      categoryDescription: null == categoryDescription
+          ? _self.categoryDescription
+          : categoryDescription // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstPage: null == firstPage
+          ? _self.firstPage
+          : firstPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastPage: null == lastPage
+          ? _self.lastPage
+          : lastPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      count: null == count
+          ? _self.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
 
-abstract class _Book implements Book {
-  const factory _Book(
-      {required final String id,
-      required final String name,
-      required final int categoryID,
-      required final String categoryDescription,
-      required final int firstPage,
-      required final int lastPage,
-      required final int count}) = _$_Book;
-
-  @override
-  String get id;
-  @override
-  String get name;
-  @override
-  int get categoryID;
-  @override
-  String get categoryDescription;
-  @override
-  int get firstPage;
-  @override
-  int get lastPage;
-  @override
-  int get count;
-  @override
-  @JsonKey(ignore: true)
-  _$$_BookCopyWith<_$_Book> get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

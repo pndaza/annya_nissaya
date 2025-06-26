@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class PdfController {
-  PdfController({required this.intialPage});
-  final int intialPage;
+  PdfController({required this.initialPage});
+  final int initialPage;
 
   PageController? _pageController;
 

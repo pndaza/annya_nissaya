@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,126 +10,27 @@ part of 'nsybook.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$NsyBook {
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  int get gotoPage => throw _privateConstructorUsedError;
+  String get id;
+  String get name;
+  int get gotoPage;
 
-  @JsonKey(ignore: true)
-  $NsyBookCopyWith<NsyBook> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $NsyBookCopyWith<$Res> {
-  factory $NsyBookCopyWith(NsyBook value, $Res Function(NsyBook) then) =
-      _$NsyBookCopyWithImpl<$Res, NsyBook>;
-  @useResult
-  $Res call({String id, String name, int gotoPage});
-}
-
-/// @nodoc
-class _$NsyBookCopyWithImpl<$Res, $Val extends NsyBook>
-    implements $NsyBookCopyWith<$Res> {
-  _$NsyBookCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of NsyBook
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? gotoPage = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      gotoPage: null == gotoPage
-          ? _value.gotoPage
-          : gotoPage // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$_NsyBookCopyWith<$Res> implements $NsyBookCopyWith<$Res> {
-  factory _$$_NsyBookCopyWith(
-          _$_NsyBook value, $Res Function(_$_NsyBook) then) =
-      __$$_NsyBookCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String id, String name, int gotoPage});
-}
-
-/// @nodoc
-class __$$_NsyBookCopyWithImpl<$Res>
-    extends _$NsyBookCopyWithImpl<$Res, _$_NsyBook>
-    implements _$$_NsyBookCopyWith<$Res> {
-  __$$_NsyBookCopyWithImpl(_$_NsyBook _value, $Res Function(_$_NsyBook) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? gotoPage = null,
-  }) {
-    return _then(_$_NsyBook(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      gotoPage: null == gotoPage
-          ? _value.gotoPage
-          : gotoPage // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$_NsyBook implements _NsyBook {
-  _$_NsyBook({required this.id, required this.name, required this.gotoPage});
+  $NsyBookCopyWith<NsyBook> get copyWith =>
+      _$NsyBookCopyWithImpl<NsyBook>(this as NsyBook, _$identity);
 
   @override
-  final String id;
-  @override
-  final String name;
-  @override
-  final int gotoPage;
-
-  @override
-  String toString() {
-    return 'NsyBook(id: $id, name: $name, gotoPage: $gotoPage)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_NsyBook &&
+            other is NsyBook &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.gotoPage, gotoPage) ||
@@ -138,27 +40,133 @@ class _$_NsyBook implements _NsyBook {
   @override
   int get hashCode => Object.hash(runtimeType, id, name, gotoPage);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'NsyBook(id: $id, name: $name, gotoPage: $gotoPage)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $NsyBookCopyWith<$Res> {
+  factory $NsyBookCopyWith(NsyBook value, $Res Function(NsyBook) _then) =
+      _$NsyBookCopyWithImpl;
+  @useResult
+  $Res call({String id, String name, int gotoPage});
+}
+
+/// @nodoc
+class _$NsyBookCopyWithImpl<$Res> implements $NsyBookCopyWith<$Res> {
+  _$NsyBookCopyWithImpl(this._self, this._then);
+
+  final NsyBook _self;
+  final $Res Function(NsyBook) _then;
+
+  /// Create a copy of NsyBook
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? gotoPage = null,
+  }) {
+    return _then(_self.copyWith(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      gotoPage: null == gotoPage
+          ? _self.gotoPage
+          : gotoPage // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _NsyBook implements NsyBook {
+  _NsyBook({required this.id, required this.name, required this.gotoPage});
+
+  @override
+  final String id;
+  @override
+  final String name;
+  @override
+  final int gotoPage;
+
+  /// Create a copy of NsyBook
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$NsyBookCopyWith<_NsyBook> get copyWith =>
+      __$NsyBookCopyWithImpl<_NsyBook>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _NsyBook &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.gotoPage, gotoPage) ||
+                other.gotoPage == gotoPage));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, gotoPage);
+
+  @override
+  String toString() {
+    return 'NsyBook(id: $id, name: $name, gotoPage: $gotoPage)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$NsyBookCopyWith<$Res> implements $NsyBookCopyWith<$Res> {
+  factory _$NsyBookCopyWith(_NsyBook value, $Res Function(_NsyBook) _then) =
+      __$NsyBookCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String id, String name, int gotoPage});
+}
+
+/// @nodoc
+class __$NsyBookCopyWithImpl<$Res> implements _$NsyBookCopyWith<$Res> {
+  __$NsyBookCopyWithImpl(this._self, this._then);
+
+  final _NsyBook _self;
+  final $Res Function(_NsyBook) _then;
+
+  /// Create a copy of NsyBook
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$_NsyBookCopyWith<_$_NsyBook> get copyWith =>
-      __$$_NsyBookCopyWithImpl<_$_NsyBook>(this, _$identity);
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? gotoPage = null,
+  }) {
+    return _then(_NsyBook(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      gotoPage: null == gotoPage
+          ? _self.gotoPage
+          : gotoPage // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
 
-abstract class _NsyBook implements NsyBook {
-  factory _NsyBook(
-      {required final String id,
-      required final String name,
-      required final int gotoPage}) = _$_NsyBook;
-
-  @override
-  String get id;
-  @override
-  String get name;
-  @override
-  int get gotoPage;
-  @override
-  @JsonKey(ignore: true)
-  _$$_NsyBookCopyWith<_$_NsyBook> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

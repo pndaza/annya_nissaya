@@ -7,11 +7,10 @@ class SectionListView extends StatelessWidget {
   final ItemScrollController? itemScrollController;
 
   const SectionListView(
-      {Key? key,
+      {super.key,
       required this.firstPage,
       required this.lastPage,
-      this.itemScrollController})
-      : super(key: key);
+      this.itemScrollController});
 
   @override
   Widget build(BuildContext context) {

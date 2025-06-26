@@ -1,4 +1,5 @@
-import 'package:asset_pdf_viewer/asset_pdf_viewer.dart';
+import 'package:just_pdf_viewer/just_pdf_viewer.dart';
+
 import '../home/sub_pages/recent_page/recent_page_controller.dart';
 import '../nsy_list/nsy_choice_providers.dart';
 import 'package:easy_debounce/easy_debounce.dart';

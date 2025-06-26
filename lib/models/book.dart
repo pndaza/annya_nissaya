@@ -3,15 +3,16 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'book.freezed.dart';
 
 @freezed
-class Book with _$Book {
-  const factory Book(
-      {required String id,
-      required String name,
-      required int categoryID,
-      required String categoryDescription,
-      required int firstPage,
-      required int lastPage,
-      required int count}) = _Book;
+abstract class Book with _$Book {
+  const factory Book({
+    required String id,
+    required String name,
+    required int categoryID,
+    required String categoryDescription,
+    required int firstPage,
+    required int lastPage,
+    required int count,
+  }) = _Book;
 }
 
 class BookDao {

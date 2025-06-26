@@ -1,7 +1,7 @@
-import 'package:asset_pdf_viewer/asset_pdf_viewer.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_pdf_viewer/just_pdf_viewer.dart';
 
 import 'reader_appbar.dart';
 import 'reader_view_controller.dart';
@@ -11,12 +11,11 @@ class ReaderPage extends ConsumerWidget {
   final String? name;
   final int pageNumber;
 
-  const ReaderPage({Key? key, required this.id, this.name, this.pageNumber = 1})
-      : super(key: key);
+  const ReaderPage({super.key, required this.id, this.name, this.pageNumber = 1});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pdfController = PdfController(intialPage: pageNumber);
+    final pdfController = PdfController(initialPage: pageNumber);
 
     return ColoredBox(
       color: Theme.of(context).brightness == Brightness.light
@@ -37,7 +36,7 @@ class ReaderPage extends ConsumerWidget {
               builder: (context, watch, child) {
                 final scrollDirection = ref.watch(scrollDirectionProvider);
                 final colorMode = ref.watch(pdfColorModeProvider);
-                return AssetPdfViewer(
+                return JustPdfViewer(
                   onPageChanged: (pageIndex) {
                     EasyDebounce.debounce(
                         'page_changed', const Duration(milliseconds: 500), () {

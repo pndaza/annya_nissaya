@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,92 +10,56 @@ part of 'recent.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$Recent {
-  String get nsyId => throw _privateConstructorUsedError;
-  String get nsyName => throw _privateConstructorUsedError;
-  int get nsyPageNumber => throw _privateConstructorUsedError;
-  String get paliName => throw _privateConstructorUsedError;
-  int get paliPageNumber => throw _privateConstructorUsedError;
-  DateTime get dateTime => throw _privateConstructorUsedError;
+  String get nsyId;
+  String get nsyName;
+  int get nsyPageNumber;
+  String get paliName;
+  int get paliPageNumber;
+  DateTime get dateTime;
 
-  @JsonKey(ignore: true)
-  $RecentCopyWith<Recent> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $RecentCopyWith<$Res> {
-  factory $RecentCopyWith(Recent value, $Res Function(Recent) then) =
-      _$RecentCopyWithImpl<$Res, Recent>;
-  @useResult
-  $Res call(
-      {String nsyId,
-      String nsyName,
-      int nsyPageNumber,
-      String paliName,
-      int paliPageNumber,
-      DateTime dateTime});
-}
-
-/// @nodoc
-class _$RecentCopyWithImpl<$Res, $Val extends Recent>
-    implements $RecentCopyWith<$Res> {
-  _$RecentCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of Recent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $RecentCopyWith<Recent> get copyWith =>
+      _$RecentCopyWithImpl<Recent>(this as Recent, _$identity);
+
   @override
-  $Res call({
-    Object? nsyId = null,
-    Object? nsyName = null,
-    Object? nsyPageNumber = null,
-    Object? paliName = null,
-    Object? paliPageNumber = null,
-    Object? dateTime = null,
-  }) {
-    return _then(_value.copyWith(
-      nsyId: null == nsyId
-          ? _value.nsyId
-          : nsyId // ignore: cast_nullable_to_non_nullable
-              as String,
-      nsyName: null == nsyName
-          ? _value.nsyName
-          : nsyName // ignore: cast_nullable_to_non_nullable
-              as String,
-      nsyPageNumber: null == nsyPageNumber
-          ? _value.nsyPageNumber
-          : nsyPageNumber // ignore: cast_nullable_to_non_nullable
-              as int,
-      paliName: null == paliName
-          ? _value.paliName
-          : paliName // ignore: cast_nullable_to_non_nullable
-              as String,
-      paliPageNumber: null == paliPageNumber
-          ? _value.paliPageNumber
-          : paliPageNumber // ignore: cast_nullable_to_non_nullable
-              as int,
-      dateTime: null == dateTime
-          ? _value.dateTime
-          : dateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Recent &&
+            (identical(other.nsyId, nsyId) || other.nsyId == nsyId) &&
+            (identical(other.nsyName, nsyName) || other.nsyName == nsyName) &&
+            (identical(other.nsyPageNumber, nsyPageNumber) ||
+                other.nsyPageNumber == nsyPageNumber) &&
+            (identical(other.paliName, paliName) ||
+                other.paliName == paliName) &&
+            (identical(other.paliPageNumber, paliPageNumber) ||
+                other.paliPageNumber == paliPageNumber) &&
+            (identical(other.dateTime, dateTime) ||
+                other.dateTime == dateTime));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, nsyId, nsyName, nsyPageNumber,
+      paliName, paliPageNumber, dateTime);
+
+  @override
+  String toString() {
+    return 'Recent(nsyId: $nsyId, nsyName: $nsyName, nsyPageNumber: $nsyPageNumber, paliName: $paliName, paliPageNumber: $paliPageNumber, dateTime: $dateTime)';
   }
 }
 
 /// @nodoc
-abstract class _$$_RecentCopyWith<$Res> implements $RecentCopyWith<$Res> {
-  factory _$$_RecentCopyWith(_$_Recent value, $Res Function(_$_Recent) then) =
-      __$$_RecentCopyWithImpl<$Res>;
-  @override
+abstract mixin class $RecentCopyWith<$Res> {
+  factory $RecentCopyWith(Recent value, $Res Function(Recent) _then) =
+      _$RecentCopyWithImpl;
   @useResult
   $Res call(
       {String nsyId,
@@ -106,12 +71,14 @@ abstract class _$$_RecentCopyWith<$Res> implements $RecentCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_RecentCopyWithImpl<$Res>
-    extends _$RecentCopyWithImpl<$Res, _$_Recent>
-    implements _$$_RecentCopyWith<$Res> {
-  __$$_RecentCopyWithImpl(_$_Recent _value, $Res Function(_$_Recent) _then)
-      : super(_value, _then);
+class _$RecentCopyWithImpl<$Res> implements $RecentCopyWith<$Res> {
+  _$RecentCopyWithImpl(this._self, this._then);
 
+  final Recent _self;
+  final $Res Function(Recent) _then;
+
+  /// Create a copy of Recent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -122,29 +89,29 @@ class __$$_RecentCopyWithImpl<$Res>
     Object? paliPageNumber = null,
     Object? dateTime = null,
   }) {
-    return _then(_$_Recent(
+    return _then(_self.copyWith(
       nsyId: null == nsyId
-          ? _value.nsyId
+          ? _self.nsyId
           : nsyId // ignore: cast_nullable_to_non_nullable
               as String,
       nsyName: null == nsyName
-          ? _value.nsyName
+          ? _self.nsyName
           : nsyName // ignore: cast_nullable_to_non_nullable
               as String,
       nsyPageNumber: null == nsyPageNumber
-          ? _value.nsyPageNumber
+          ? _self.nsyPageNumber
           : nsyPageNumber // ignore: cast_nullable_to_non_nullable
               as int,
       paliName: null == paliName
-          ? _value.paliName
+          ? _self.paliName
           : paliName // ignore: cast_nullable_to_non_nullable
               as String,
       paliPageNumber: null == paliPageNumber
-          ? _value.paliPageNumber
+          ? _self.paliPageNumber
           : paliPageNumber // ignore: cast_nullable_to_non_nullable
               as int,
       dateTime: null == dateTime
-          ? _value.dateTime
+          ? _self.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
@@ -153,8 +120,8 @@ class __$$_RecentCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Recent implements _Recent {
-  const _$_Recent(
+class _Recent implements Recent {
+  const _Recent(
       {required this.nsyId,
       required this.nsyName,
       required this.nsyPageNumber,
@@ -175,16 +142,19 @@ class _$_Recent implements _Recent {
   @override
   final DateTime dateTime;
 
+  /// Create a copy of Recent
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Recent(nsyId: $nsyId, nsyName: $nsyName, nsyPageNumber: $nsyPageNumber, paliName: $paliName, paliPageNumber: $paliPageNumber, dateTime: $dateTime)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$RecentCopyWith<_Recent> get copyWith =>
+      __$RecentCopyWithImpl<_Recent>(this, _$identity);
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Recent &&
+            other is _Recent &&
             (identical(other.nsyId, nsyId) || other.nsyId == nsyId) &&
             (identical(other.nsyName, nsyName) || other.nsyName == nsyName) &&
             (identical(other.nsyPageNumber, nsyPageNumber) ||
@@ -201,36 +171,73 @@ class _$_Recent implements _Recent {
   int get hashCode => Object.hash(runtimeType, nsyId, nsyName, nsyPageNumber,
       paliName, paliPageNumber, dateTime);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'Recent(nsyId: $nsyId, nsyName: $nsyName, nsyPageNumber: $nsyPageNumber, paliName: $paliName, paliPageNumber: $paliPageNumber, dateTime: $dateTime)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$RecentCopyWith<$Res> implements $RecentCopyWith<$Res> {
+  factory _$RecentCopyWith(_Recent value, $Res Function(_Recent) _then) =
+      __$RecentCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String nsyId,
+      String nsyName,
+      int nsyPageNumber,
+      String paliName,
+      int paliPageNumber,
+      DateTime dateTime});
+}
+
+/// @nodoc
+class __$RecentCopyWithImpl<$Res> implements _$RecentCopyWith<$Res> {
+  __$RecentCopyWithImpl(this._self, this._then);
+
+  final _Recent _self;
+  final $Res Function(_Recent) _then;
+
+  /// Create a copy of Recent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$_RecentCopyWith<_$_Recent> get copyWith =>
-      __$$_RecentCopyWithImpl<_$_Recent>(this, _$identity);
+  $Res call({
+    Object? nsyId = null,
+    Object? nsyName = null,
+    Object? nsyPageNumber = null,
+    Object? paliName = null,
+    Object? paliPageNumber = null,
+    Object? dateTime = null,
+  }) {
+    return _then(_Recent(
+      nsyId: null == nsyId
+          ? _self.nsyId
+          : nsyId // ignore: cast_nullable_to_non_nullable
+              as String,
+      nsyName: null == nsyName
+          ? _self.nsyName
+          : nsyName // ignore: cast_nullable_to_non_nullable
+              as String,
+      nsyPageNumber: null == nsyPageNumber
+          ? _self.nsyPageNumber
+          : nsyPageNumber // ignore: cast_nullable_to_non_nullable
+              as int,
+      paliName: null == paliName
+          ? _self.paliName
+          : paliName // ignore: cast_nullable_to_non_nullable
+              as String,
+      paliPageNumber: null == paliPageNumber
+          ? _self.paliPageNumber
+          : paliPageNumber // ignore: cast_nullable_to_non_nullable
+              as int,
+      dateTime: null == dateTime
+          ? _self.dateTime
+          : dateTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
 }
 
-abstract class _Recent implements Recent {
-  const factory _Recent(
-      {required final String nsyId,
-      required final String nsyName,
-      required final int nsyPageNumber,
-      required final String paliName,
-      required final int paliPageNumber,
-      required final DateTime dateTime}) = _$_Recent;
-
-  @override
-  String get nsyId;
-  @override
-  String get nsyName;
-  @override
-  int get nsyPageNumber;
-  @override
-  String get paliName;
-  @override
-  int get paliPageNumber;
-  @override
-  DateTime get dateTime;
-  @override
-  @JsonKey(ignore: true)
-  _$$_RecentCopyWith<_$_Recent> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on
