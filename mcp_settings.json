@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "github.com/zcaceres/fetch-mcp": {
+      "command": "node",
+      "args": [
+        "/Users/pndaza/Development/Projects/annya_nissaya/mcp_servers/fetch-mcp/dist/index.js"
+      ]
+    }
+  }
+}

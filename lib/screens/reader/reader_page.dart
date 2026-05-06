@@ -11,48 +11,43 @@ class ReaderPage extends ConsumerWidget {
   final String? name;
   final int pageNumber;
 
-  const ReaderPage({super.key, required this.id, this.name, this.pageNumber = 1});
+  const ReaderPage({
+    super.key,
+    required this.id,
+    this.name,
+    this.pageNumber = 1,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pdfController = PdfController(initialPage: pageNumber);
-
-    return ColoredBox(
-      color: Theme.of(context).brightness == Brightness.light
-          ? Theme.of(context).colorScheme.primary
-          : Theme.of(context).colorScheme.surface,
-      child: SafeArea(
-        bottom: false,
-        child: Scaffold(
-          appBar: ReaderAppBar(
-            bookID: id,
-            bookName: name,
-          ),
-          body: GestureDetector(
-            onTap: () {
-              ref.read(readerViewController).toggleFullScreenMode();
-            },
-            child: Consumer(
-              builder: (context, watch, child) {
-                final scrollDirection = ref.watch(scrollDirectionProvider);
-                final colorMode = ref.watch(pdfColorModeProvider);
-                return JustPdfViewer(
-                  onPageChanged: (pageIndex) {
-                    EasyDebounce.debounce(
-                        'page_changed', const Duration(milliseconds: 500), () {
-                      ref
-                          .read(readerViewController)
-                          .onPageChanged(nsyBookId: id, pageIndex: pageIndex);
-                    });
-                  },
-                  assetPath: 'assets/books/pdf/$id.pdf',
-                  scrollDirection: scrollDirection,
-                  pdfController: pdfController,
-                  colorMode: colorMode,
-                );
+    final scrollDirection = ref.watch(scrollDirectionProvider);
+    final colorMode = ref.watch(pdfColorModeProvider);
+    final container = ProviderScope.containerOf(context);
+    return Scaffold(
+      appBar: ReaderAppBar(bookID: id, bookName: name),
+      body: JustPdfViewer.asset(
+        'assets/books/pdf/$id.pdf',
+        config: PdfViewerConfig(
+            initialPage: pageNumber,
+            scrollDirection: scrollDirection,
+            colorMode: colorMode,
+            pageSnapping: scrollDirection == Axis.horizontal),
+        callbacks: PdfViewerCallbacks(
+          onPageChanged: (pageIndex) {
+            EasyDebounce.debounce(
+              'page_changed',
+              const Duration(milliseconds: 500),
+              () {
+                if (!context.mounted) return;
+                container
+                    .read(readerViewController)
+                    .onPageChanged(nsyBookId: id, pageIndex: pageIndex);
               },
-            ),
-          ),
+            );
+          },
+          onTap: () {
+            ref.read(readerViewController).toggleFullScreenMode();
+          },
         ),
       ),
     );

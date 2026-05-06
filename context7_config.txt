@@ -1,0 +1,1215 @@
+TITLE: Migrating context.read for provider access - After (Dart)
+DESCRIPTION: This Dart code shows the updated approach for accessing a provider's notifier in Riverpod 1.0.0. `context.read` is replaced by `ref.read(provider.notifier)`, requiring the widget to be a `ConsumerWidget` to gain access to `WidgetRef ref`.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/docs/migration/0.14.0_to_1.0.0.mdx#_snippet_9
+
+LANGUAGE: Dart
+CODE:
+```
+class Example extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    SomeButton(
+      onPressed: () => ref.read(provider.notifier).doSomething(),
+    );
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Migrating from ProviderListener to ref.listen
+DESCRIPTION: Demonstrates the new way to listen for provider changes using `ref.listen` within a `ConsumerWidget`. This replaces the deprecated `ProviderListener` widget, providing a more direct and integrated way to react to state updates.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/packages/hooks_riverpod/CHANGELOG.md#_snippet_12
+
+LANGUAGE: Dart
+CODE:
+```
+class Example extends ConsumerWidget {
+    @override
+    Widget build(BuildContext context, WidgetRef ref) {
+      ref.listen<int>(counter, (count) {
+        print('count changed $count');
+      });
+    }
+  }
+```
+
+----------------------------------------
+
+TITLE: Initializing Riverpod with ProviderScope in Flutter
+DESCRIPTION: This snippet demonstrates the correct and incorrect ways to initialize Riverpod in a Flutter application. It highlights that `ProviderScope` should be used as the root widget to manage the `ProviderContainer` and make provider states accessible throughout the widget tree. It also warns against manually creating multiple `ProviderContainer` instances without understanding their isolated state management, which can lead to separate, inaccessible state threads.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/concepts/scopes.mdx#_snippet_0
+
+LANGUAGE: dart
+CODE:
+```
+final valueProvider = StateProvider((ref) => 0);
+
+// DO this
+void main() {
+  runApp(ProviderScope(child: MyApp()));
+}
+
+//DON'T do this:
+final myProviderContainer = ProviderContainer();
+void main(){
+  runApp(MyApp());
+}
+```
+
+----------------------------------------
+
+TITLE: Declaring a Basic Riverpod Provider in Dart
+DESCRIPTION: This snippet demonstrates the most common way to declare a Riverpod provider as a global immutable variable. It uses the `Provider` class to expose an object that never changes, receiving a `ref` object to interact with other providers or manage state lifecycle.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/packages/hooks_riverpod/dartdoc/providers.md#_snippet_0
+
+LANGUAGE: Dart
+CODE:
+```
+final myProvider = Provider((ref) {
+  return MyValue();
+});
+```
+
+----------------------------------------
+
+TITLE: Initializing Riverpod with ProviderScope in Flutter
+DESCRIPTION: This snippet illustrates the correct and incorrect methods for initializing Riverpod in a Flutter application. It demonstrates that `ProviderScope` should wrap the root `MyApp` widget to properly manage and expose provider states, rather than directly instantiating `ProviderContainer` in `main()`. Using `ProviderScope` ensures that the `ProviderContainer` is correctly integrated into the widget tree and accessible to all widgets.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/ko/docusaurus-plugin-content-docs/current/concepts/scopes.mdx#_snippet_0
+
+LANGUAGE: Dart
+CODE:
+```
+final valueProvider = StateProvider((ref) => 0);
+
+// DO this
+void main() {
+  runApp(ProviderScope(child: MyApp()));
+}
+
+//DON'T do this:
+final myProviderContainer = ProviderContainer();
+void main(){
+  runApp(MyApp());
+}
+```
+
+----------------------------------------
+
+TITLE: Defining Riverpod Providers with Code Generation - Dart
+DESCRIPTION: This snippet demonstrates defining a Riverpod provider using code generation. It requires annotating functions or classes with `@riverpod` or `@Riverpod()`, which can also configure provider behavior like `keepAlive`. The annotated function's name determines the generated provider variable, and it must accept a `ref` parameter for interacting with other providers. This function is called once on initial read, with subsequent reads returning the cached value.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/essentials/first_request.mdx#_snippet_1
+
+LANGUAGE: Dart
+CODE:
+```
+@riverpod
+Result myFunction(Ref ref) {
+  <你的逻辑写这里>
+}
+```
+
+----------------------------------------
+
+TITLE: Declaring a Basic Riverpod Provider (Dart)
+DESCRIPTION: This snippet illustrates the fundamental way to declare a Riverpod provider using the `Provider` type. It defines `myProvider` as an immutable global variable that exposes a `MyValue` object, with the `ref` object available for advanced interactions like reading other providers or managing lifecycle events.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/packages/riverpod/dartdoc/providers.md#_snippet_0
+
+LANGUAGE: Dart
+CODE:
+```
+final myProvider = Provider((ref) {
+  return MyValue();
+});
+```
+
+----------------------------------------
+
+TITLE: Implementing Debounced Search with FutureProvider and StateProvider (Dart/Flutter)
+DESCRIPTION: This comprehensive example demonstrates a full 'search as we type' implementation. It uses a StateProvider for the search field, a FutureProvider to fetch questions from the StackExchange API (handling empty queries and encoding), and a Flutter UI to display results, including loading and error states. It implicitly handles debouncing through Riverpod's reactive nature and request cancellation via ref.onDispose.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/docs/cookbooks/search_as_we_type.mdx#_snippet_2
+
+LANGUAGE: Dart
+CODE:
+```
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+final searchFieldProvider = StateProvider<String>((ref) => '');
+final questionsProvider = FutureProvider<List>((ref) async {
+  final client = http.Client();
+  ref.onDispose(client.close);
+
+  final search = ref.watch(searchFieldProvider);
+
+  Uri uri;
+
+  if (search.isEmpty) {
+    uri = Uri.parse(
+      'https://api.stackexchange.com/2.3/questions?order=desc&sort=activity&site=stackoverflow',
+    );
+  } else {
+    final encodedQuery = Uri.encodeComponent(search);
+    uri = Uri.parse(
+      'https://api.stackexchange.com/2.3/search?order=desc&sort=activity&intitle=$encodedQuery&site=stackoverflow',
+    );
+  }
+
+  final response = await client.get(uri);
+  final questions = jsonDecode(response.body);
+
+  return questions['items'].map((question) => question['title']).toList();
+});
+
+void main() => runApp(const ProviderScope(child: MyApp()));
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(home: MyHomePage());
+  }
+}
+
+class MyHomePage extends ConsumerWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final questions = ref.watch(questionsProvider);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Questions')),
+      body: Column(
+        children: [
+          TextField(
+            onChanged: (value) =>
+                ref.read(searchFieldProvider.notifier).state = value,
+          ),
+          Expanded(
+            child: switch (questions) {
+              AsyncData(:final value) => ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    final question = value[index];
+
+                    return ListTile(
+                      title: Text(
+                        question.toString(),
+                      ),
+                    );
+                  },
+                ),
+              AsyncError(:final error) => Center(child: Text('Error $error')),
+              _ => const Center(child: CircularProgressIndicator()),
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Implementing a Real-time Searchbar with Riverpod and StackExchange API (Dart)
+DESCRIPTION: This comprehensive example demonstrates a 'search as we type' feature using Riverpod. It defines `searchFieldProvider` for input and `questionsProvider` (a `FutureProvider`) to fetch data from the StackExchange API based on the search query. It handles empty queries, encodes search terms, and manages HTTP client lifecycle. The UI uses `ConsumerWidget` to display search results with loading and error states.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/bn/docusaurus-plugin-content-docs/current/cookbooks/search_as_we_type.mdx#_snippet_2
+
+LANGUAGE: Dart
+CODE:
+```
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+final searchFieldProvider = StateProvider<String>((ref) => '');
+final questionsProvider = FutureProvider<List>((ref) async {
+  final client = http.Client();
+  ref.onDispose(client.close);
+
+  final search = ref.watch(searchFieldProvider);
+
+  Uri uri;
+
+  if (search.isEmpty) {
+    uri = Uri.parse(
+      'https://api.stackexchange.com/2.3/questions?order=desc&sort=activity&site=stackoverflow',
+    );
+  } else {
+    final encodedQuery = Uri.encodeComponent(search);
+    uri = Uri.parse(
+      'https://api.stackexchange.com/2.3/search?order=desc&sort=activity&intitle=$encodedQuery&site=stackoverflow',
+    );
+  }
+
+  final response = await client.get(uri);
+  final questions = jsonDecode(response.body);
+
+  return questions['items'].map((question) => question['title']).toList();
+});
+
+void main() => runApp(const ProviderScope(child: MyApp()));
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(home: MyHomePage());
+  }
+}
+
+class MyHomePage extends ConsumerWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final questions = ref.watch(questionsProvider);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Questions')),
+      body: Column(
+        children: [
+          TextField(
+            onChanged: (value) =>
+                ref.read(searchFieldProvider.notifier).state = value,
+          ),
+          Expanded(
+            child: questions.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Center(child: Text('Error $error')),
+              data: (questions) {
+                return ListView.builder(
+                  itemCount: questions.length,
+                  itemBuilder: (context, index) {
+                    final question = questions[index];
+
+                    return ListTile(
+                      title: Text(
+                        question.toString(),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Creating a Reusable Debounce Extension for Riverpod Ref
+DESCRIPTION: This code defines an extension method `debounce` on Riverpod's `Ref` object. This utility encapsulates the logic for both debouncing and cancellation, allowing developers to apply this pattern consistently across multiple providers. It takes a future-returning function and a duration, executing the function only after the specified duration has passed without further triggers, or aborting if the provider is disposed.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/docs/case_studies/cancel.mdx#_snippet_4
+
+LANGUAGE: Dart
+CODE:
+```
+import 'dart:async';
+
+import 'package:riverpod/riverpod.dart';
+
+// A custom exception to signal that a provider was disposed before an operation completed.
+class ProviderDisposeException implements Exception {
+  const ProviderDisposeException();
+}
+
+extension RefX on Ref {
+  /// Debounces an asynchronous operation.
+  /// The [create] function will only be executed after [duration] has passed
+  /// without the provider being disposed.
+  /// If the provider is disposed before the duration, the operation is aborted.
+  Future<T> debounce<T>(
+    Future<T> Function() create,
+    {Duration duration = const Duration(milliseconds: 500),}
+  ) async {
+    final completer = Completer<void>();
+    final timer = Timer(duration, () {
+      if (!completer.isCompleted) {
+        completer.complete();
+      }
+    });
+
+    onDispose(() {
+      timer.cancel();
+      if (!completer.isCompleted) {
+        completer.completeError(const ProviderDisposeException());
+      }
+    });
+
+    try {
+      await completer.future; // Wait for the timer to complete or for dispose
+    } on ProviderDisposeException {
+      // If the provider was disposed, rethrow to indicate cancellation
+      rethrow;
+    } catch (e) {
+      // Handle other potential errors during the wait
+      rethrow;
+    }
+
+    // If we reach here, it means the timer completed, so execute the original future
+    return create();
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Initializing Riverpod ProviderScope in Flutter
+DESCRIPTION: This snippet demonstrates the essential setup for Riverpod by wrapping the root of the Flutter application with `ProviderScope`. This widget enables Riverpod's functionality throughout the app, ensuring that providers can be accessed and managed globally. It should be placed directly as a parameter to `runApp`.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/docs/essentials/first_request.mdx#_snippet_0
+
+LANGUAGE: Dart
+CODE:
+```
+void main() {
+  runApp(
+    // To install Riverpod, we need to add this widget above everything else.
+    // This should not be inside "MyApp" but as direct parameter to "runApp".
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Initializing Riverpod with ProviderScope in Flutter
+DESCRIPTION: This snippet shows the essential setup for Riverpod in a Flutter application. The `ProviderScope` widget must be added at the root of the widget tree to enable providers to function correctly throughout the application.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/packages/hooks_riverpod/dartdoc/providers.md#_snippet_2
+
+LANGUAGE: Dart
+CODE:
+```
+void main() {
+  runApp(ProviderScope(child: MyApp()));
+}
+```
+
+----------------------------------------
+
+TITLE: Defining a Provider (Riverpod)
+DESCRIPTION: This snippet illustrates how to define a provider using the `Riverpod` framework. The `final` keyword is used to declare a global provider variable, making it accessible throughout the application for consumption.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/fr/docusaurus-plugin-content-docs/current/riverpod_for_provider_users.mdx#_snippet_2
+
+LANGUAGE: dart
+CODE:
+```
+final modelProvider = Provider<Model>(...);
+```
+
+----------------------------------------
+
+TITLE: Defining and Consuming Async Provider with Riverpod Generator (Dart)
+DESCRIPTION: This snippet demonstrates how to define an asynchronous provider using the @riverpod annotation from riverpod_annotation and how to consume it within a Flutter Consumer widget. The fetchProducts function simulates an API call, returning a list of Product objects, and the Consumer handles loading, error, and data states. It showcases the generator's ability to simplify FutureProvider.autoDispose.family equivalents with multiple parameters.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/packages/riverpod_generator/README.md#_snippet_0
+
+LANGUAGE: Dart
+CODE:
+```
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dio/dio.dart';
+
+part 'my_file.g.dart';
+
+// Using riverpod_generator, we define Providers by annotating functions with @riverpod.
+// In this example, riverpod_generator will use this function and generate a matching "fetchProductProvider".
+// The following example would be the equivalent of a "FutureProvider.autoDispose.family"
+@riverpod
+Future<List<Product>> fetchProducts(Ref ref, {required int page, int limit = 50}) async {
+  final dio = Dio();
+  final response = await dio.get('https://my-api/products?page=$page&limit=$limit');
+  final json = response.data! as List;
+  return json.map((item) => Product.fromJson(item)).toList();
+}
+
+
+// Now that we defined a provider, we can then listen to it inside widgets as usual.
+Consumer(
+  builder: (context, ref, child) {
+    AsyncValue<List<Product>> products = ref.watch(fetchProductProvider(page: 1));
+
+    // Since our provider is async, we need to handle loading/error states
+    return products.when(
+      loading: () => CircularProgressIndicator(),
+      error: (err, stack) => Text('error: $err'),
+      data: (products) {
+        return ListView(
+          children: [
+            for (final product in products)
+              Text(product.name),
+          ],
+        );
+      },
+    );
+  },
+);
+```
+
+----------------------------------------
+
+TITLE: Complete Riverpod 'Search as We Type' Application
+DESCRIPTION: This comprehensive example demonstrates a full 'search as we type' application using Riverpod. It defines a `StateProvider` for the search input and a `FutureProvider` to fetch questions from the StackExchange API based on the input, including handling loading, error, and data states. It also shows the main application structure and UI components.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/it/docusaurus-plugin-content-docs/current/cookbooks/search_as_we_type.mdx#_snippet_2
+
+LANGUAGE: Dart
+CODE:
+```
+// Copyright (c) 2019, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+final searchFieldProvider = StateProvider<String>((ref) => '');
+final questionsProvider = FutureProvider<List>((ref) async {
+  final client = http.Client();
+  ref.onDispose(client.close);
+
+  final search = ref.watch(searchFieldProvider);
+
+  Uri uri;
+
+  if (search.isEmpty) {
+    uri = Uri.parse(
+      'https://api.stackexchange.com/2.3/questions?order=desc&sort=activity&site=stackoverflow',
+    );
+  } else {
+    final encodedQuery = Uri.encodeComponent(search);
+    uri = Uri.parse(
+      'https://api.stackexchange.com/2.3/search?order=desc&sort=activity&intitle=$encodedQuery&site=stackoverflow',
+    );
+  }
+
+  final response = await client.get(uri);
+  final questions = jsonDecode(response.body);
+
+  return questions['items'].map((question) => question['title']).toList();
+});
+
+void main() => runApp(const ProviderScope(child: MyApp()));
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(home: MyHomePage());
+  }
+}
+
+class MyHomePage extends ConsumerWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final questions = ref.watch(questionsProvider);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Questions')),
+      body: Column(
+        children: [
+          TextField(
+            onChanged: (value) =>
+                ref.read(searchFieldProvider.notifier).state = value,
+          ),
+          Expanded(
+            child: switch (questions) {
+              AsyncData(:final value) => ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    final question = value[index];
+
+                    return ListTile(
+                      title: Text(
+                        question.toString(),
+                      ),
+                    );
+                  },
+                ),
+              AsyncError(:final error) => Center(child: Text('Error $error')),
+              _ => const Center(child: CircularProgressIndicator()),
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Defining a Simple String Provider for Dependencies (Dart)
+DESCRIPTION: This snippet defines `cityProvider`, a basic Riverpod provider that exposes a string value 'London'. It serves as a foundational example to demonstrate how other providers can depend on and consume its value using `ref.watch`.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/packages/riverpod/dartdoc/providers.md#_snippet_3
+
+LANGUAGE: Dart
+CODE:
+```
+final cityProvider = Provider((ref) => 'London');
+```
+
+----------------------------------------
+
+TITLE: Complete Riverpod Search-as-You-Type Implementation (Dart)
+DESCRIPTION: This comprehensive example showcases a full "search as you type" application using Riverpod. It defines `searchFieldProvider` for user input, `questionsProvider` for asynchronous data fetching from StackExchange API (including debouncing and cancellation), and constructs a Flutter UI with `TextField` and `ListView.builder` to display search results, while gracefully handling loading, data, and error states.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/cookbooks/search_as_we_type.mdx#_snippet_2
+
+LANGUAGE: Dart
+CODE:
+```
+// Copyright (c) 2019, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+final searchFieldProvider = StateProvider<String>((ref) => '');
+final questionsProvider = FutureProvider<List>((ref) async {
+  final client = http.Client();
+  ref.onDispose(client.close);
+
+  final search = ref.watch(searchFieldProvider);
+
+  Uri uri;
+
+  if (search.isEmpty) {
+    uri = Uri.parse(
+      'https://api.stackexchange.com/2.3/questions?order=desc&sort=activity&site=stackoverflow',
+    );
+  } else {
+    final encodedQuery = Uri.encodeComponent(search);
+    uri = Uri.parse(
+      'https://api.stackexchange.com/2.3/search?order=desc&sort=activity&intitle=$encodedQuery&site=stackoverflow',
+    );
+  }
+
+  final response = await client.get(uri);
+  final questions = jsonDecode(response.body);
+
+  return questions['items'].map((question) => question['title']).toList();
+});
+
+void main() => runApp(const ProviderScope(child: MyApp()));
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(home: MyHomePage());
+  }
+}
+
+class MyHomePage extends ConsumerWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final questions = ref.watch(questionsProvider);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Questions')),
+      body: Column(
+        children: [
+          TextField(
+            onChanged: (value) =>
+                ref.read(searchFieldProvider.notifier).state = value,
+          ),
+          Expanded(
+            child: switch (questions) {
+              AsyncData(:final value) => ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    final question = value[index];
+
+                    return ListTile(
+                      title: Text(
+                        question.toString(),
+                      ),
+                    );
+                  },
+                );,
+              AsyncError(:final error) => Center(child: Text('Error $error')),
+              _ => const Center(child: CircularProgressIndicator()),
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Defining a Todo List StateNotifier and Provider in Riverpod
+DESCRIPTION: This snippet defines a `Todo` model and a `TodoListNotifier` which extends `StateNotifier` to manage a list of todos. It includes methods for adding, toggling completion, and removing todos. The `todoListProvider` is then created using `StateNotifierProvider` to expose the `TodoListNotifier`'s state.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/providers/state_notifier_provider.mdx#_snippet_0
+
+LANGUAGE: Dart
+CODE:
+```
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:state_notifier/state_notifier.dart';
+
+// A simple Todo model
+class Todo {
+  Todo({required this.id, required this.description, this.completed = false});
+
+  final String id;
+  final String description;
+  final bool completed;
+
+  Todo copyWith({String? id, String? description, bool? completed}) {
+    return Todo(
+      id: id ?? this.id,
+      description: description ?? this.description,
+      completed: completed ?? this.completed,
+    );
+  }
+}
+
+// The StateNotifier that holds and manages the list of todos
+class TodoListNotifier extends StateNotifier<List<Todo>> {
+  TodoListNotifier([List<Todo>? initialTodos]) : super(initialTodos ?? []);
+
+  void addTodo(Todo todo) {
+    state = [...state, todo];
+  }
+
+  void toggle(String id) {
+    state = [
+      for (final todo in state)
+        if (todo.id == id)
+          todo.copyWith(completed: !todo.completed)
+        else
+          todo,
+    ];
+  }
+
+  void remove(String id) {
+    state = state.where((todo) => todo.id != id).toList();
+  }
+}
+
+// The StateNotifierProvider that exposes the TodoListNotifier
+final todoListProvider = StateNotifierProvider<TodoListNotifier, List<Todo>>((ref) {
+  return TodoListNotifier([
+    Todo(id: '1', description: 'Learn Riverpod', completed: false),
+    Todo(id: '2', description: 'Build a todo app', completed: true),
+  ]);
+});
+```
+
+----------------------------------------
+
+TITLE: Defining a Riverpod Provider with `riverpod_generator`
+DESCRIPTION: This snippet demonstrates how to define a Riverpod provider using the `riverpod_generator` package. It shows the `@riverpod` annotation applied to a global function, which automatically generates the corresponding provider variable. The function must accept a `Ref` object as its first parameter and can return `Future` or `Stream` types. The function's logic is executed on the first read, and its result is cached.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/docs/essentials/first_request.mdx#_snippet_2
+
+LANGUAGE: Dart
+CODE:
+```
+@riverpod
+    Result myFunction(Ref ref) {
+      <your logic here>
+    }
+```
+
+----------------------------------------
+
+TITLE: Filtering Rebuilds with Provider Selectors - Riverpod Dart
+DESCRIPTION: This snippet illustrates how to use `myProvider.select` to optimize widget rebuilds. By selecting a specific part of a provider's state (e.g., `user.name`), the `Consumer` will only rebuild if the selected value changes, preventing unnecessary UI updates when other parts of the state are modified.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/packages/flutter_riverpod/CHANGELOG.md#_snippet_21
+
+LANGUAGE: Dart
+CODE:
+```
+final userProvider = StateNotifierProvider<UserController, User>(...);
+
+Consumer(
+    builder: (context, ref, _) {
+      // With this syntax, the Consumer will not rebuild if `userProvider`
+      // emits a new User but its "name" didn't change.
+      bool userName = ref.watch(userProvider.select((user) => user.name));
+    },
+  )
+```
+
+----------------------------------------
+
+TITLE: Defining a Riverpod Notifier with Code Generator
+DESCRIPTION: This snippet illustrates how to define a Riverpod notifier using the `riverpod_generator`. The `@riverpod` annotation simplifies the process by automatically inferring the correct notifier type. The notifier class extends `_$` followed by its own name, and includes the mandatory `build` method for initial state setup and public methods for state modification.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/docs/essentials/side_effects.mdx#_snippet_1
+
+LANGUAGE: Dart
+CODE:
+```
+@riverpod
+class MyNotifier extends _$MyNotifier {
+  @override
+  Result build() {
+    <your logic here>
+  }
+
+  <your methods here>
+}
+```
+
+----------------------------------------
+
+TITLE: Cancelling Async Operations in Riverpod Notifiers without `mounted`
+DESCRIPTION: This snippet demonstrates how to handle asynchronous operations and their cancellation in `AsyncNotifier`s, addressing the absence of a `mounted` property. Since `AsyncNotifier` instances are not disposed on rebuild, a `mounted` property would be misleading. Instead, `ref.onDispose` is used to cancel ongoing asynchronous tasks (e.g., network requests) using a `Completer` or similar mechanism, preventing `StateError`s if the notifier's state is rebuilt while an operation is pending.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/migration/from_state_notifier.mdx#_snippet_2
+
+LANGUAGE: dart
+CODE:
+```
+import 'dart:async';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class MyAsyncNotifier extends AsyncNotifier<int> {
+  @override
+  Future<int> build() async {
+    final cancelCompleter = Completer<void>();
+    ref.onDispose(() {
+      if (!cancelCompleter.isCompleted) {
+        cancelCompleter.completeError(StateError('Operation cancelled'));
+      }
+    });
+
+    try {
+      // Simulate an async operation that can be cancelled
+      await Future.delayed(const Duration(seconds: 2));
+      if (cancelCompleter.isCompleted) {
+        throw StateError('Operation was cancelled before completion');
+      }
+      return 42;
+    } on StateError catch (e) {
+      // Catch the cancellation error thrown by the completer
+      print('Async operation caught cancellation: $e');
+      return 0; // Or handle as appropriate
+    } catch (e) {
+      print('Other error during async operation: $e');
+      rethrow;
+    }
+  }
+}
+
+final myAsyncNotifierProvider = AsyncNotifierProvider<MyAsyncNotifier, int>(MyAsyncNotifier.new);
+```
+
+----------------------------------------
+
+TITLE: Initializing Riverpod with ProviderScope in Dart
+DESCRIPTION: This code snippet shows the essential setup for Riverpod in a Flutter application. The `ProviderScope` widget must wrap the root of the Flutter application to make providers accessible throughout the widget tree and enable their functionality.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/docs/concepts/providers.mdx#_snippet_2
+
+LANGUAGE: dart
+CODE:
+```
+void main() {
+  runApp(ProviderScope(child: MyApp()));
+}
+```
+
+----------------------------------------
+
+TITLE: Creating a Riverpod Provider that Depends on Another Provider in Dart
+DESCRIPTION: This snippet demonstrates how to create a `FutureProvider` that depends on another provider (`cityProvider`). It uses `ref.watch(cityProvider)` to read the value of `cityProvider`. If `cityProvider`'s value changes, `weatherProvider` will automatically re-execute and update its state, triggering UI updates.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/packages/flutter_riverpod/dartdoc/providers.md#_snippet_4
+
+LANGUAGE: Dart
+CODE:
+```
+final weatherProvider = FutureProvider((ref) async {
+  // We use `ref.watch` to watch another provider, and we pass it the provider
+  // that we want to consume. Here: cityProvider
+  final city = ref.watch(cityProvider);
+
+  // We can then use the result to do something based on the value of `cityProvider`.
+  return fetchWeather(city: city);
+});
+```
+
+----------------------------------------
+
+TITLE: Defining StateNotifierProvider for Todo List in Dart
+DESCRIPTION: This snippet defines a `Todo` model, a `TodosNotifier` class extending `StateNotifier` to manage a list of `Todo` objects, and the `todosProvider` using `StateNotifierProvider`. It centralizes the logic for adding, toggling, and removing todos, exposing an immutable list of todos as its state.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/ko/docusaurus-plugin-content-docs/current/providers/state_notifier_provider.mdx#_snippet_0
+
+LANGUAGE: Dart
+CODE:
+```
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:state_notifier/state_notifier.dart';
+
+class Todo {
+  Todo({
+    required this.id,
+    required this.description,
+    this.completed = false,
+  });
+
+  final String id;
+  final String description;
+  final bool completed;
+
+  Todo copyWith({String? id, String? description, bool? completed}) {
+    return Todo(
+      id: id ?? this.id,
+      description: description ?? this.description,
+      completed: completed ?? this.completed,
+    );
+  }
+}
+
+class TodosNotifier extends StateNotifier<List<Todo>> {
+  TodosNotifier([List<Todo>? initialTodos]) : super(initialTodos ?? []);
+
+  void addTodo(Todo todo) {
+    state = [...state, todo];
+  }
+
+  void toggle(String id) {
+    state = [
+      for (final todo in state)
+        if (todo.id == id)
+          todo.copyWith(completed: !todo.completed)
+        else
+          todo,
+    ];
+  }
+
+  void remove(String id) {
+    state = state.where((todo) => todo.id != id).toList();
+  }
+}
+
+final todosProvider = StateNotifierProvider<TodosNotifier, List<Todo>>((ref) {
+  return TodosNotifier([
+    Todo(id: '1', description: 'Learn Riverpod', completed: false),
+    Todo(id: '2', description: 'Build a todo app', completed: true),
+  ]);
+});
+```
+
+----------------------------------------
+
+TITLE: Correct `ProviderScope` Usage for `missing_provider_scope` Lint (Dart)
+DESCRIPTION: This Dart code snippet demonstrates the correct way to initialize a Flutter application using Riverpod by wrapping the root widget (`MyApp`) with a `ProviderScope`. This satisfies the `missing_provider_scope` lint rule, ensuring Riverpod providers are properly accessible.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/packages/riverpod_lint/README.md#_snippet_7
+
+LANGUAGE: dart
+CODE:
+```
+void main() {
+  runApp(ProviderScope(child: MyApp()));
+}
+```
+
+----------------------------------------
+
+TITLE: Filtering a Todo List with ref.watch in Riverpod (Dart)
+DESCRIPTION: This snippet demonstrates how to use `ref.watch` within a Riverpod provider to combine the states of multiple other providers. It creates a `filteredTodoListProvider` by watching `filterTypeProvider` and `todosProvider` to dynamically filter a list of tasks based on the current filter type, ensuring the filtered list automatically updates when either dependency changes.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/ko/docusaurus-plugin-content-docs/current/concepts/reading.mdx#_snippet_7
+
+LANGUAGE: Dart
+CODE:
+```
+enum FilterType { all, completed, uncompleted }
+
+final filterTypeProvider = StateProvider<FilterType>((ref) => FilterType.all);
+
+class Todo {
+  Todo(this.id, this.description, this.completed);
+  final String id;
+  final String description;
+  final bool completed;
+}
+
+final todosProvider = StateNotifierProvider<TodosNotifier, List<Todo>>((ref) {
+  return TodosNotifier();
+});
+
+class TodosNotifier extends StateNotifier<List<Todo>> {
+  TodosNotifier() : super([]);
+
+  void addTodo(Todo todo) {
+    state = [...state, todo];
+  }
+
+  void toggle(String id) {
+    state = [
+      for (final todo in state)
+        if (todo.id == id) Todo(todo.id, todo.description, !todo.completed) else todo,
+    ];
+  }
+}
+
+final filteredTodoListProvider = Provider<List<Todo>>((ref) {
+  final filter = ref.watch(filterTypeProvider);
+  final todos = ref.watch(todosProvider);
+
+  switch (filter) {
+    case FilterType.completed:
+      return todos.where((todo) => todo.completed).toList();
+    case FilterType.uncompleted:
+      return todos.where((todo) => !todo.completed).toList();
+    case FilterType.all:
+      return todos;
+  }
+});
+```
+
+----------------------------------------
+
+TITLE: Displaying Provider State in a Widget with ref.watch (Dart)
+DESCRIPTION: This example illustrates how a Flutter widget uses `ref.watch` to observe a Riverpod provider's state and automatically rebuild its UI when that state changes. Specifically, it watches a `countProvider` and displays its current integer value, ensuring the UI reflects the latest count without manual updates.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/ko/docusaurus-plugin-content-docs/current/concepts/reading.mdx#_snippet_8
+
+LANGUAGE: Dart
+CODE:
+```
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final countProvider = StateProvider<int>((ref) => 0);
+
+class CounterPage extends ConsumerWidget {
+  const CounterPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(countProvider);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Counter Example')),
+      body: Center(
+        child: Text(
+          'Count: $count',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => ref.read(countProvider.notifier).state++,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Defining AsyncNotifierProvider for a Remote Todo List in Dart
+DESCRIPTION: This snippet defines an `AsyncNotifierProvider` named `remoteTodosProvider` using a `RemoteTodosNotifier` class. The `RemoteTodosNotifier` handles asynchronous state initialization and updates for a remote todo list, simulating data fetching and modification. It's suitable for state that depends on asynchronous operations.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/it/docusaurus-plugin-content-docs/current/providers/notifier_provider.mdx#_snippet_2
+
+LANGUAGE: dart
+CODE:
+```
+import 'package:riverpod/riverpod.dart';
+
+class RemoteTodo {
+  RemoteTodo(this.description, {this.completed = false});
+  final String description;
+  bool completed;
+}
+
+class RemoteTodosNotifier extends AsyncNotifier<List<RemoteTodo>> {
+  @override
+  Future<List<RemoteTodo>> build() async {
+    // Simulate fetching todos from a remote source
+    await Future.delayed(const Duration(seconds: 1));
+    return [
+      RemoteTodo('Buy groceries', completed: true),
+      RemoteTodo('Walk the dog'),
+    ];
+  }
+
+  Future<void> addTodo(String description) async {
+    state = const AsyncValue.loading();
+    // Simulate adding to remote and refetching
+    await Future.delayed(const Duration(milliseconds: 500));
+    state = AsyncValue.data([...state.value!, RemoteTodo(description)]);
+  }
+}
+
+final remoteTodosProvider = AsyncNotifierProvider<RemoteTodosNotifier, List<RemoteTodo>>(RemoteTodosNotifier.new);
+```
+
+----------------------------------------
+
+TITLE: Declaring Auto-Disposing StreamProvider in Dart
+DESCRIPTION: Demonstrates the basic usage of the `.autoDispose` modifier with a `StreamProvider` in Riverpod. Appending `.autoDispose` ensures that the `userProvider`'s state is automatically destroyed when it's no longer being listened to, optimizing resource usage.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/it/docusaurus-plugin-content-docs/current/concepts/modifiers/auto_dispose.mdx#_snippet_0
+
+LANGUAGE: Dart
+CODE:
+```
+final userProvider = StreamProvider.autoDispose<User>((ref) {
+
+});
+```
+
+----------------------------------------
+
+TITLE: Building UI with Search Input and Results (Flutter/Dart)
+DESCRIPTION: Implements the main UI screen (MyHomePage) as a ConsumerWidget to interact with Riverpod providers. It contains a TextField that updates the searchFieldProvider and uses ref.watch on the questionsProvider to display results, handling loading, error, and data states via the .when method.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/fr/docusaurus-plugin-content-docs/current/cookbooks/search_as_we_type.mdx#_snippet_5
+
+LANGUAGE: Dart
+CODE:
+```
+class MyHomePage extends ConsumerWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final questions = ref.watch(questionsProvider);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Questions')),
+      body: Column(
+        children: [
+          TextField(
+            onChanged: (value) =>
+                ref.read(searchFieldProvider.notifier).state = value,
+          ),
+          Expanded(
+            child: questions.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Center(child: Text('Error $error')),
+              data: (questions) {
+                return ListView.builder(
+                  itemCount: questions.length,
+                  itemBuilder: (context, index) {
+                    final question = questions[index];
+
+                    return ListTile(
+                      title: Text(
+                        question.toString(),
+                      ), disasters to your application.
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Testing with `ProviderContainer.test` in Riverpod (Dart)
+DESCRIPTION: This example shows how to use the new `ProviderContainer.test` utility in Riverpod 3.0 for unit testing. It creates a new `ProviderContainer` instance that is automatically disposed after the test completes, simplifying test setup and teardown. This utility replaces the previously common `createContainer` pattern, providing a standardized way to manage provider scopes in tests.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/docs/whats_new.mdx#_snippet_26
+
+LANGUAGE: dart
+CODE:
+```
+void main() {
+  test('My test', () {
+    final container = ProviderContainer.test();
+    // Use the container
+    // ...
+    // The container is automatically disposed after the test ends
+  });
+}
+```
+
+----------------------------------------
+
+TITLE: Fully Migrated Riverpod AsyncNotifier with Mutations (Dart)
+DESCRIPTION: This snippet presents a fully migrated AsyncNotifier class, demonstrating how to handle both initialization and state mutations (side effects) efficiently. It highlights the removal of boilerplate code, such as manual 'isLoading'/'hasError' flags and extensive 'try'/'catch' blocks for state updates, by leveraging Riverpod's automatic AsyncValue management.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/migration/from_change_notifier.mdx#_snippet_2
+
+LANGUAGE: dart
+CODE:
+```
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'todo_list_notifier.g.dart';
+
+// Assume Todo class and _apiService are defined elsewhere.
+// class Todo { ... }
+// final _apiService = ApiService();
+
+@riverpod
+class TodoList extends _$TodoList {
+  // The build method handles initial asynchronous data fetching.
+  // Riverpod automatically manages the loading and error states of this Future.
+  @override
+  Future<List<Todo>> build() async {
+    // This replaces manual isLoading/hasError flags for initial load.
+    return _apiService.fetchTodos();
+  }
+
+  // Example mutation method: adding a new todo.
+  // Riverpod simplifies state updates and error handling for mutations.
+  Future<void> addTodo(String description) async {
+    // Optionally set state to loading during mutation, or handle optimistically.
+    // state = const AsyncValue.loading(); // If you want to show loading during mutation
+
+    try {
+      final newTodo = await _apiService.addTodo(description);
+      // Update the state with the new list of todos.
+      // Riverpod handles the AsyncValue.data wrapper.
+      state = AsyncValue.data([...state.value!, newTodo]);
+    } catch (e, st) {
+      // If an error occurs during the mutation, update the state to an error state.
+      // This replaces manual hasError flags and try/catch boilerplate for state management.
+      state = AsyncValue.error(e, st);
+    }
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Handling Async States in Flutter UI with Riverpod
+DESCRIPTION: This Flutter widget demonstrates how to consume a Riverpod provider (`boredSuggestionProvider`) within a `ConsumerWidget` to react to asynchronous data states. It uses a `switch` expression to gracefully handle `AsyncData` (success), `AsyncError` (failure), and other states (loading), displaying appropriate UI based on the provider's current state.
+SOURCE: https://github.com/rrousselgit/riverpod/blob/master/README.md#_snippet_1
+
+LANGUAGE: Dart
+CODE:
+```
+class Home extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final boredSuggestion = ref.watch(boredSuggestionProvider);
+    // Perform a switch-case on the result to handle loading/error states
+    return switch (boredSuggestion) {
+      AsyncData(:final value) => Text('data: $value'),
+      AsyncError(:final error) => Text('error: $error'),
+      _ => const Text('loading'),
+    };
+  }
+}
+```
