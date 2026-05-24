@@ -1,7 +1,10 @@
+import 'dart:ffi' show DynamicLibrary;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqlite3/open.dart';
+import 'package:sqlite3/sqlite3.dart';
 import 'package:window_manager/window_manager.dart';
 import 'dart:io' show Platform;
 import 'app.dart';
@@ -13,8 +16,15 @@ final myLogger = Logger();
 
 Future<void> main() async {
   if (Platform.isWindows || Platform.isLinux) {
-    // Initialize FFI
-    sqfliteFfiInit();
+    if (Platform.isWindows) {
+      // Load sqlite3.dll from the executable directory (copied from vendor/ at build time)
+      open.overrideFor(OperatingSystem.windows, () {
+        return DynamicLibrary.open('sqlite3.dll');
+      });
+      sqlite3.openInMemory().dispose();
+    } else {
+      sqfliteFfiInit();
+    }
 
     // Change the default factory
     databaseFactory = databaseFactoryFfi;
