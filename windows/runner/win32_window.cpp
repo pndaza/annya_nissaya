@@ -153,6 +153,16 @@ bool Win32Window::Show() {
   return ShowWindow(window_handle_, SW_SHOWNORMAL);
 }
 
+bool Win32Window::CreateAndShow(const std::wstring& title,
+                                const Point& origin,
+                                const Size& size) {
+  if (!Create(title, origin, size)) {
+    return false;
+  }
+  Show();
+  return true;
+}
+
 // static
 LRESULT CALLBACK Win32Window::WndProc(HWND const window,
                                       UINT const message,
