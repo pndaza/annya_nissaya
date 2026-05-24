@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  uni_links_desktop
+  app_links
   url_launcher_windows
 )
 

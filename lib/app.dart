@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:app_links/app_links.dart';
 
 import 'deep_link_handler.dart';
 import 'screens/home/home_page.dart';
@@ -21,9 +21,9 @@ class MyApp extends ConsumerStatefulWidget {
 
 class MyAppState extends ConsumerState<MyApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
-  late final DeepLinkHandler _mobileDeepLink;
+  final _appLinks = AppLinks();
   StreamSubscription<String>? _mobilelinkSubscription;
-  StreamSubscription<Uri?>? _desktoplinkSubscription;
+  StreamSubscription<Uri>? _desktoplinkSubscription;
 
   @override
   void initState() {
@@ -61,8 +61,8 @@ class MyAppState extends ConsumerState<MyApp> {
   }
 
   Future<void> initMobileDeepLinks() async {
-    _mobileDeepLink = DeepLinkHandler();
-    _mobilelinkSubscription = _mobileDeepLink.state.listen((uri) {
+    final mobileDeepLink = DeepLinkHandler();
+    _mobilelinkSubscription = mobileDeepLink.state.listen((uri) {
       debugPrint('onAppLink: $uri');
       openMobileAppLink(uri);
     });
@@ -72,42 +72,22 @@ class MyAppState extends ConsumerState<MyApp> {
   /// while already started.
   void _handleIncomingLinks() {
     if (!kIsWeb) {
-      // It will handle app links while the app is already started - be it in
-      // the foreground or in the background.
-      _desktoplinkSubscription = uriLinkStream.listen((Uri? uri) {
-        if (uri != null) {
-          debugPrint('onAppLink: $uri');
-          openDesktopAppLink(uri);
-        }
-      }, onError: (Object err) {
-//
-      });
+      _desktoplinkSubscription = _appLinks.uriLinkStream.listen((Uri uri) {
+        debugPrint('onAppLink: $uri');
+        openDesktopAppLink(uri);
+      }, onError: (Object err) {});
     }
   }
 
-  /// Handle the initial Uri - the one the app was started with
-  ///
-  /// **ATTENTION**: `getInitialLink`/`getInitialUri` should be handled
-  /// ONLY ONCE in your app's lifetime, since it is not meant to change
-  /// throughout your app's life.
-  ///
-  /// We handle all exceptions, since it is called from initState.
   Future<void> _handleInitialUri() async {
-    // In this example app this is an almost useless guard, but it is here to
-    // show we are not going to call getInitialUri multiple times, even if this
-    // was a weidget that will be disposed of (ex. a navigation route change).
-
     try {
-      final uri = await getInitialUri();
+      final uri = await _appLinks.getInitialLink();
       if (uri != null) {
         debugPrint('onAppLink: $uri');
         openDesktopAppLink(uri);
       }
     } on PlatformException {
-      // Platform messages may fail but we ignore the exception
       debugPrint('falied to get initial uri');
-    } on FormatException catch (err) {
-      debugPrint(err.toString());
     }
   }
 
