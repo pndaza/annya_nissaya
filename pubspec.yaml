@@ -15,7 +15,6 @@ dependencies:
   vs_scrollbar: ^1.0.0
   shared_preferences: ^2.0.5
   enum_to_string: ^2.0.1
-  flutter_markdown: ^0.7.7+1
   grouped_list: ^6.0.0
   scrollable_positioned_list: ^0.3.8
   path_provider: ^2.0.8
