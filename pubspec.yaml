@@ -32,6 +32,8 @@ dependencies:
   app_links: ^7.0.0
   easy_debounce: ^2.0.3
   http: ^1.2.1
+  window_manager: ^0.4.3
+  screen_retriever: ^0.2.0
 
 dev_dependencies:
   flutter_test:
